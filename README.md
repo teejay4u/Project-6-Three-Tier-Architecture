@@ -64,4 +64,54 @@
 
 ![](20.%20checking%20setup%20is%20running%20df%20-h.png)
 
-15. 
+15. configuring DB-Instance(creting partitions) 
+
+![](db-configuring-partitions.png)
+
+16. Verifying DB-setup
+
+![](/verifying%20the%20setup.png)
+
+17. Installing wordpress on webserver 
+    I. updated the repository with **sudo yum update -y** 
+    ii. installed wget, apache and its dependencies **(sudo yum -y install wget httpd php php-mysqlnd php-fpm php-json)**
+![](/21.%20installing%20apache%20dependencies%20and%20updating%20db-server.png)
+    iii. istalled php and its dependencies 
+
+![](21.%20installing%20apache%20dependencies%20and%20updating%20db-server.png)
+    iv. Downloaded wordpress and copied its files to the /var/www/html/ directory 
+![](23.%20downloading%20wordpess%2C%20unzipping%20and%20copying%20defualt%20page%20to%20app%20directory.png)
+
+18. Configuring SELinux policies
+    sudo chown -R apache:apache /var/www/html/wordpress
+![](25.%20giving%20the%20apache%20service%20ownership%20of%20website%20directory.png)
+    sudo chcon -t httpd_sys_rw_content_t /var/www/html/wordpress -R
+    sudo setsebool -P httpd_can_network_connect=1
+![](26.%20Setting%20SElinux%20policy%20on%20website%20directory.png)
+
+19. installing MySQL on the db-server
+    sudo yum update
+    sudo yum install mysql-server
+![](27.%20updating%20and%20installing%20mysql-server.png)
+
+20. checking the mysql service is running by running **(sudo systemctl status mysqld)**
+![](/28.%20checking%20mysqld%20service%20is%20running%20.png)
+
+21. Confguring Database to work with wordpress 
+    sudo mysql
+    CREATE DATABASE wordpress;
+    CREATE USER `myuser`@`<Web-Server-Private-IP-Address>` IDENTIFIED BY 'mypass';
+![](29.%20creating%20user%20for%20database%20and%20setting%20password.png)
+    GRANT ALL ON wordpress.* TO 'myuser'@'<Web-Server-Private-IP-Address>';
+    FLUSH PRIVILEGES;
+![](30.%20creating%20user%20for%20db%20and%20setting_granting%20permissions%20to%20the%20user.png)
+    SHOW DATABASES;
+    exit
+
+22. successfully connected to Db server from webserver
+
+![](/successfully%20connected%20to%20db-server%20from%20web-server.png)
+
+23. Wordpress Welcome Page 
+
+![](/Wordpress%20installed.png)
